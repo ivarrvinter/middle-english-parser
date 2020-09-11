@@ -44,9 +44,9 @@ def PosMapFunc(x):
 		x += '.'
 	if x in posList:
 		return [posList[x], True]
-	return [None, False] # '<span style="color: red;">SKIPPED : ' + x + '</span>'
+	return ['<span style="color: red;">SKIPPED : ' + x + '</span>', False]
 
-def XfChild(ch:dict, trg:dict, html:str):
+def XfChild(w: str, ch:dict, trg:dict, html:str):
 	nextIdx:bool
 	tmp = []
 	# Parse
@@ -60,14 +60,19 @@ def XfChild(ch:dict, trg:dict, html:str):
 			tmp.append(m[0])
 			if m[1]:
 				mCount += 1
-		# Add 'Phrase' if conditions match
-		if not (mCount > 0 or 'pos' in trg or 'see' in html):
-			tmp.append('Phrase')
 		# If parsed, There may be more, Continue
 		nextIdx = (mCount > 0)
-	elif ('text' in ch) and ('and' in ch['text'].lower()):
-		# There's and, Continue
-		nextIdx = True
+	# Parse other forms
+	elif ('text' in ch):
+		# Check if There's an 'and', and Continue if required
+		if ('text' in ch) and ('and' in ch['text'].lower()):
+			nextIdx = True
+		# Add 'Phrase' if conditions match
+		elif not ('pos' in trg or 'see' in html):
+			tmp.append('Phrase')
+			nextIdx = False
+		else:
+			nextIdx = False
 	else:
 		# Unknown Element, Terminate
 		nextIdx = False
@@ -84,7 +89,7 @@ def XfChild(ch:dict, trg:dict, html:str):
 		trg.pop('pos')
 	# Return
 	return trg, nextIdx
-def XfDef(s:dict):
+def XfDef(w: str, s:dict):
 	if s['tag'] == 'SPAN' and 'pagenum' in s['class'].values():
 			# It's a page number
 			return None
@@ -92,7 +97,7 @@ def XfDef(s:dict):
 	chs = s['children']
 	shouldContinue = True
 	for ch in chs:
-		d, shouldContinue = XfChild(ch, d, s['html'])
+		d, shouldContinue = XfChild(w, ch, d, s['html'])
 	d['src'] = s
 	return d
 
@@ -102,17 +107,17 @@ def Execute(src:dict):
 	for w in words:
 		defs = src[w]
 		for i in range(0, len(defs)):
-			defs[i] = XfDef(defs[i])
+			defs[i] = XfDef(w, defs[i])
 		while None in defs:
 			defs.remove(None)
 		if len(defs) > 0:
 			ret[w] = defs
 	return ret
 
-f = open('02.json', 'r')
+f = open('01.json', 'r')
 src = json.loads(f.read())
 f.close()
 dst = Execute(src)
-f = open('03.json', 'w')
+f = open('02.json', 'w')
 f.write(json.dumps(dst, sort_keys=True, indent=4))
 f.close()

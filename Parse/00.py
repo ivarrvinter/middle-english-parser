@@ -1,6 +1,6 @@
 import json
-SRC = '00.json'
-DST = '01.json'
+SRC = '../Source/Source.json'
+DST = '00.json'
 
 def TransformDict(s:dict):
 	ks = list(s.keys())

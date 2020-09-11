@@ -1,6 +1,6 @@
 import json
-SRC = '01.json'
-DST = '02.json'
+SRC = '00.json'
+DST = '01.json'
 
 def TransformParagraphs(s:list):
 	ret = {}
