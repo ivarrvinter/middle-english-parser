@@ -1,0 +1,15 @@
+{
+	"name": "gutenberg",
+	"version": "1.0.0",
+	"description": "",
+	"main": "Parse.js",
+	"type": "module",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"author": "",
+	"license": "ISC",
+	"dependencies": {
+		"html-to-json": "^0.6.0"
+	}
+}
