@@ -1,10 +1,4 @@
-Parse/*Check.html
-Parse/01.json
-Parse/02.json
-Parse/03.json
-Parse/04.json
-Parse/05.json
-Parse/06.json
-Parse/07.json
-Parse/08.json
-Parse/09.json
+/.vscode
+/Parse/*.html
+/Parse/*.json
+/Source/*.json
