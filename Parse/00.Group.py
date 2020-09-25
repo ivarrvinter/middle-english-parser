@@ -4,7 +4,7 @@ from random import randint
 
 SMALL_SAMPLE = 'small' in argv
 SRC = '../Source/Source.json'
-DST = '00.Groups.json'
+DST = '00.Group.json'
 	
 def ExtractGroups(s: dict):
 	ret = []
@@ -67,7 +67,8 @@ def TransformLines(lines:list):
 				if type(g) is dict:
 					groups[i] = [g]
 			obj['groups'] = groups
-		d.append(obj)
+		if len(obj.keys()) > 0:
+			d.append(obj)
 	print()
 	return d
 

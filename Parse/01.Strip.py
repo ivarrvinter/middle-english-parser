@@ -1,5 +1,5 @@
 import json
-SRC = '00.Groups.json'
+SRC = '00.Group.json'
 DST = '01.Strip.json'
 
 def TransformElement(s:dict):

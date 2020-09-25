@@ -1,7 +1,7 @@
 import json
 
-SRC = '00.Groups.json'
-DST = '00.Groups.html'
+SRC = '00.Group.json'
+DST = '00.Group.html'
 
 def WriteElement(e: dict):
 	ret = ''
