@@ -1,6 +1,4 @@
 function ToJson(node) {
-	if (node.parentNode.tagName === 'BODY' && node.tagName !== 'P')
-		return undefined;
 	let children = []
 	let chCount = node.childNodes.length;
 	for (let i = 0; i < chCount; i++) {
@@ -9,19 +7,15 @@ function ToJson(node) {
 			children.push(ret)
 	}
 	return {
-		tag: node.tagName,
-		name: node.name,
+		tag: node.tagName, id: node.id, name: node.name,
 		class: node.classList?.length > 0 ? node.classList : undefined,
-		text: node.tagName === 'BODY' ? undefined : node.textContent,
-		html: (node.parentNode?.tagName === 'BODY') ? node.innerHTML : undefined,
+		text: node.id === 'Content' ? undefined : node.textContent,
+		html: (node.parentNode?.id === 'Content') ? node.innerHTML : undefined,
 		children: children.length > 0 ? children : undefined
 	}
 }
 
 function DownloadJson(json) {
-	json = json['children']
-	document.contentType = 'application/json';
-	document.body.innerHTML = '<pre>' + JSON.stringify(json, undefined, 4) + '</pre>'
 	var dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(
 		JSON.stringify(json, undefined, 4)
 	);
@@ -30,4 +24,19 @@ function DownloadJson(json) {
 	dlAnchorElem.setAttribute("download", "Source.json");
 	dlAnchorElem.click();
 	dlAnchorElem.remove();
+}
+
+let extracted = null;
+
+function OnClickExtract() {
+	extracted = ToJson(document.getElementById('Content'));
+	extracted = extracted['children'];
+	document.getElementById('Content').innerHTML = '<pre>' + JSON.stringify(extracted, undefined, 4) + '</pre>'
+}
+
+function OnClickDownload() {
+	if (extracted == null) {
+		OnClickExtract();
+	}
+	DownloadJson(extracted);
 }

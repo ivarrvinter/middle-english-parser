@@ -1,5 +1,7 @@
+#!/bin/bash
 cd Parse;
-python 00.py
-python 01.py
-python 02.py
-python 03.InitCheck.py
+python 00.Groups.py $1
+python 00.Groups.Test.py
+python 01.Strip.py
+python 01.Strip.Test.py
+echo "Finished !"

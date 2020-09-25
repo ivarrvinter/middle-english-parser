@@ -1,6 +1,8 @@
 import json
+from sys import argv
+from random import randint
 
-SMALL_SAMPLE = False
+SMALL_SAMPLE = 'small' in argv
 SRC = '../Source/Source.json'
 DST = '00.Groups.json'
 	
@@ -47,7 +49,11 @@ def ExtractGroups(s: dict):
 def TransformLines(lines:list):
 	d = []
 	lineCount = len(lines)
-	rng = range(int(lineCount / 2) - 50, int(lineCount / 2) + 50) if SMALL_SAMPLE else range(0, lineCount)
+	rng = range(lineCount)
+	if SMALL_SAMPLE:
+		ctr = randint(50, lineCount - 50)
+		rng = range(ctr - 50, ctr + 50)
+		lineCount = rng.stop
 	for i in rng:
 		line = lines[i]
 		print('\rExtracting Sample ' + str(i) + ' / ' + str(lineCount), end='\t')
@@ -69,6 +75,8 @@ f = open(SRC, 'r')
 src = json.loads(f.read())
 f.close()
 dst = TransformLines(src)
+print('\rSaving Extracted Samples ...', end='\t')
 f = open(DST, 'w')
 f.write(json.dumps(dst, sort_keys=False, indent=4))
 f.close()
+print('\r')

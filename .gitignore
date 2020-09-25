@@ -1,4 +1,5 @@
-/.vscode
+/.vscode/*
+!/.vscode/launch.json
 /Parse/*.html
 /Parse/*.json
 /Source/*.json
