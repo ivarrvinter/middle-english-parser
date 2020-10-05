@@ -60,7 +60,10 @@ def WriteTable(src: list):
 		border-bottom: 1px inset red;
 	}
 </style>"""
-	ret += '<table><thead><tr><td class="cOriginal">Original</td><td class="cGroups">Groups</td></td></thead><tbody>'
+	ret += '<table><thead><tr>'
+	ret += '<td class="cOriginal">Original</td>'
+	ret += '<td class="cGroups">Groups</td>'
+	ret += '</tr></thead><tbody>'
 	for s in src:
 		ret += '<tr><td class="cOriginal">'
 		if 'html' in s:

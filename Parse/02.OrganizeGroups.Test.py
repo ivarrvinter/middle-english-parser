@@ -1,57 +1,60 @@
 import json
 
-SRC = '00.Group.json'
-DST = '00.Group.html'
+SRC = '02.OrganizeGroups.json'
+DST = '02.OrganizeGroups.html'
 
 def WriteElement(e: dict):
-	ret = ''
+	bgn = ''
 	end = ''
+	cnt = []
 	if 'tag' in e:
-		ret += '<' + e['tag'].lower() + '>'
+		bgn += '<' + e['tag'].lower() + '>'
 		end = '</' + e['tag'].lower() + '>'
-	content = ''
 	if 'children' in e:
 		for ch in e['children']:
-			cnt = WriteElement(ch)
-			if cnt != None:
-				content += cnt
+			txt = WriteElement(ch)
+			if txt != None:
+				cnt.append(txt)
 	elif 'text' in e:
-		content = e['text']
-	if content.strip() == '':
+		cnt.append(e['text'])
+	txt = '<br/>'.join(cnt)
+	if txt.strip() == '':
 		return None
-	return ret + content + end
+	return bgn + txt + end
 
 def WriteGroup(g: list):
 	if not type(g) is list:
 		print(str(g) + 'Not List')
-	ret = '<div class="cGroups">'
+	bgn = '<div class="cGroups">'
+	end = '</div>'
+	cnt = []
 	for e in g:
 		try:
 			txt = WriteElement(e)
+			if txt != None:
+				cnt.append(txt)
 		except:
 			print(g)
-		if txt != None:
-			ret += txt
-	return ret + '</div>'
+	return bgn + '<br/>'.join(cnt) + end
 
 def WriteTable(src: list):
 	ret = """<style>
-	* {
+	body, table, tr {
 		margin: 0;
 		padding: 0;
-	}
-	body {
-		text-align: center
+		width: 100%;
+		text-align: center;
 	}
 	td {
 		padding: 10px;
+		text-align: justify;
 		border: 1px black solid;
 	}
 	td.cOriginal {
-		max-width: 50vw;
+		width: 50vw;
 	}
 	td.cGroups {
-		max-width: 50vw;
+		width: 50vw;
 	}
 	div.cGroups {
 		border-bottom: 1px inset red;
@@ -77,7 +80,7 @@ def WriteTable(src: list):
 	ret += '</tbody></table>'
 	return ret
 
-print('\rWriting Groups Result in ' + DST)
+print('\rWriting Strip Result in ' + DST)
 f = open(SRC, 'r')
 src = json.loads(f.read())
 f.close()

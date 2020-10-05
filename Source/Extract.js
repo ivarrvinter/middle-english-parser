@@ -1,18 +1,24 @@
 function ToJson(node) {
-	let children = []
+	if (node.parentNode.id === 'Content' && node.tagName !== 'P') {
+		return undefined;
+	}
 	let chCount = node.childNodes.length;
+	let children = []
 	for (let i = 0; i < chCount; i++) {
 		let ret = ToJson(node.childNodes.item(i))
 		if (ret !== undefined)
 			children.push(ret)
 	}
-	return {
+	let ret = {
 		tag: node.tagName, id: node.id, name: node.name,
 		class: node.classList?.length > 0 ? node.classList : undefined,
 		text: node.id === 'Content' ? undefined : node.textContent,
 		html: (node.parentNode?.id === 'Content') ? node.innerHTML : undefined,
 		children: children.length > 0 ? children : undefined
 	}
+	if (ret == {} || node.id !== 'Content' && ret.text === undefined || ret.text !== undefined && ret.text.trim().length == 1)
+		return undefined;
+	return ret;
 }
 
 function DownloadJson(json) {

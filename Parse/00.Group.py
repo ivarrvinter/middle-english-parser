@@ -6,45 +6,67 @@ SMALL_SAMPLE = 'small' in argv
 SRC = '../Source/Source.json'
 DST = '00.Group.json'
 	
-def ExtractGroups(s: dict):
-	ret = []
-	cGroup = []
-	chs = s['children'] if 'children' in s else []
-	for ch in chs:
-		if 'text' in ch and ';' in ch['text']:
-			texts = ch['text'].split(';')
-			parts = ExtractGroups(ch)
-			tCount = len(texts)
-			pCount = len(parts)
-			chObjects = []
-			if pCount == 0:
-				for i in range(0, tCount):
-					chObjects.append({
-						'text': texts[i]
-					})
-			elif tCount == pCount:
-				for i in range(0, tCount):
-					chObjects.append({
-						'text': texts[i],
-						'children': parts[i]
-					})
+def ExtractGroups(src: list, sep: str = ';', consumeSeparator: bool = True):
+	r = []
+	for g in src:
+		ret = []
+		cGroup = []
+		for ch in g:
+			if 'text' in ch and sep in ch['text']:
+				texts = ch['text'].split(sep)
+				tCount = len(texts)
+				for i in range(tCount):
+					texts[i] = texts[i].strip(' ')
+				while '' in texts:
+					texts.remove('')
+				tCount = len(texts)
+				parts = ExtractGroups([ch['children']] if 'children' in ch else [], sep, consumeSeparator)
+				if len(parts) > 0:
+					parts = parts[0]
+				if not consumeSeparator:
+					for i in range(1, tCount):
+						texts[i] = sep + texts[i]
+				pCount = len(parts)
+				chObjects = []
+				if pCount == 0:
+					for i in range(0, tCount):
+						chObjects.append({
+							'text': texts[i]
+						})
+				elif tCount == pCount:
+					for i in range(0, tCount):
+						chObjects.append({
+							'text': texts[i],
+							'children': parts[i]
+						})
+				else:
+					print('\n')
+					print('Child : ')
+					print(ch)
+					print('Texts : ')
+					print(texts)
+					print('Parts : ')
+					print(parts)
+					print()
+					raise Exception('Invalid Number of Child elements, Expected 0 or ' + str(tCount) + ', Found ' + str(pCount))
+				if tCount > 0:
+					cGroup.append(chObjects[0])
+				ret.append(cGroup)
+				cGroup = []
+				if tCount > 1:
+					lastIndex = tCount - 1
+					cGroup.append(chObjects[lastIndex])
+					if tCount > 2:
+						for i in range(1, lastIndex):
+							ret.append([chObjects[i]])
 			else:
-				raise Exception('Invalid Number of Child elements, Expected 0 or ' + str(tCount) + ', Found ' + str(pCount))
-			if tCount > 0:
-				cGroup.append(chObjects[0])
+				cGroup.append(ch)
+		if len(cGroup) > 0:
+			if not type(cGroup) is list:
+				print('Not List in Return')
 			ret.append(cGroup)
-			cGroup = []
-			if tCount > 1:
-				lastIndex = tCount - 1
-				cGroup.append(chObjects[lastIndex])
-				if tCount > 2:
-					for i in range(1, lastIndex):
-						ret.append(chObjects[i])
-		else:
-			cGroup.append(ch)
-	if len(cGroup) > 0:
-		ret.append(cGroup)
-	return ret
+		r.append(ret)
+	return r
 
 def TransformLines(lines:list):
 	d = []
@@ -60,12 +82,9 @@ def TransformLines(lines:list):
 		obj = {}
 		if 'html' in line:
 			obj['html'] = line['html']
-			groups = ExtractGroups(line)
-			gCount = len(groups)
-			for i in range(0, gCount):
-				g = groups[i]
-				if type(g) is dict:
-					groups[i] = [g]
+			groups = ExtractGroups([line['children']], ';', True)
+			groups = ExtractGroups(groups, 'see', False)
+			groups = ExtractGroups(groups, 'Comb.', False)
 			obj['groups'] = groups
 		if len(obj.keys()) > 0:
 			d.append(obj)
