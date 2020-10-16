@@ -1,5 +1,15 @@
+# VS Code
 /.vscode/*
-!/.vscode/launch.json
-/Parse/*.html
-/Parse/*.json
-/Source/*.json
+!/.vscode/tasks.json
+!/.vscode/settings.json
+
+# Project
+/dst
+/node_modules
+
+# Old Project Files (Remove Later)
+/_OldPythonProject_
+/data/Extract.js
+
+# Data
+/data/Parse/*

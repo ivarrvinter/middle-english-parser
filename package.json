@@ -1,0 +1,27 @@
+{
+	"name": "middle-english-database",
+	"version": "0.0.0",
+	"description": "Middle English Database for online translator",
+	"main": "dst/Index.js",
+	"scripts": {
+		"start": "npm run build; node .",
+		"build": "tsc"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://amirhosseinghanipour@gitlab.com/metempsukhosis/middle-english-studies/database.git"
+	},
+	"author": "Amirhossein Ghanipour",
+	"bugs": {
+		"url": "https://gitlab.com/metempsukhosis/middle-english-studies/database/issues"
+	},
+	"homepage": "https://gitlab.com/metempsukhosis/middle-english-studies/database#readme",
+	"devDependencies": {
+		"@types/jsdom": "^16.2.4",
+		"@types/node": "^14.11.2",
+		"typescript": "^4.0.3"
+	},
+	"dependencies": {
+		"jsdom": "^16.4.0"
+	}
+}

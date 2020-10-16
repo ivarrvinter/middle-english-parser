@@ -1,3 +1,0 @@
-Where tag == B:
-	if next[0] is uppercase : Source Language
-	elif next[0] is lowercase : Definition

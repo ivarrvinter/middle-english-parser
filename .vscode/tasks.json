@@ -1,0 +1,31 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"type": "npm",
+			"script": "build",
+			"problemMatcher": [
+				"$tsc"
+			],
+			"group": {
+				"kind": "build",
+				"isDefault": true
+			},
+			"label": "Build",
+			"detail": "Build"
+		},
+		{
+			"type": "npm",
+			"script": "start",
+			"problemMatcher": [
+				"$tsc"
+			],
+			"group": {
+				"kind": "test",
+				"isDefault": true
+			},
+			"label": "Build & Run",
+			"detail": "Build & Run"
+		}
+	]
+}
