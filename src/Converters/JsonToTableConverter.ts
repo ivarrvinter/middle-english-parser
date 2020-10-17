@@ -13,7 +13,7 @@ body, table, tbody, thead {
 }
 td, th {
 	padding: 10px;
-	border: 1px solid black;
+	border: 5px groove gray;
 }
 th {
 	text-decoration: bold;
