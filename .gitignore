@@ -12,4 +12,5 @@
 /data/Extract.js
 
 # Data
-/data/Parse/*
+/data/Parse/*.json
+/data/Tests/*.html
