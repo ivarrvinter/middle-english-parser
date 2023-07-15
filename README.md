@@ -1,4 +1,3 @@
-# Middle English Database
+# Middle English Parser & POS Tagger
 
-Middle English Database for online translator.
-P.S., Data are parsed from Gutenberg's online dictionary.
+This repo is a Middle English parser and POS tagger written in TypeScript. The dataset is gathered from Gutenberg's website.
